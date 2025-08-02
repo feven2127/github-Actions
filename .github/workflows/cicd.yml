@@ -32,7 +32,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: trivy installation
       run: |
-       sudo apt-get install wget gnupg
+       sudo apt-get install -y apt-transport-https gnupg lsb-release 
        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
        sudo apt-get update -y
@@ -43,7 +43,19 @@ jobs:
       run: sudo apt install gitleaks -y
     - name: Gitleaks code scan
       run: gitleaks detect source .
-      
+
+  Test:
+     runs-on: selfhosted
+     steps:
+     - uses: actions/checkout@v4
+     - name: Set up JDK 17
+       uses: actions/setup-java@v4
+       with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+     - name: test with Maven
+       run: mvn test
 
   
 
