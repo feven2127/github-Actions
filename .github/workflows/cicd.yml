@@ -1,14 +1,13 @@
-permissions:
-  contents: read
-  security-events: write
-
 
 name: CICD pipline
 
 on:
   push:
     branches: [ "master" ]
-  
+    
+ permissions:
+  contents: read
+  security-events: write
 
 jobs:
   compile:
